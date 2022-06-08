@@ -6,7 +6,6 @@ from mesa.datacollection import DataCollector
 from agent import Native
 import random
 
-
 def agent_states(model):
     """
     Return the number of rebels (active citizens), pro-empire (quiet/passive 

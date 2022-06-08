@@ -1,12 +1,11 @@
 # Module used to visualise the simulation on a 2-d grid in an interactive manner.
 
-import numpy as np
 from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.ModularVisualization import ModularServer
 
 from mesa.visualization.modules import ChartModule 
 from mesa.visualization.UserParam import UserSettableParameter 
-from model import VoterModel
+from model import EmpireModel
 
 # Set the model parameters
 params = {"width": 50, 
@@ -15,6 +14,14 @@ params = {"width": 50,
           "percent_of_citizens":0.6
          }
 
+"""
+frac_one_slider = UserSettableParameter('slider', 'Fraction of agents with Opinion=1', 
+                                        value=.5, min_value=0.1, max_value=.9, step=0.1)
+model_type_option = UserSettableParameter('choice', 'Type', value='linear',
+                                              choices=['linear', 'deterministic'])
+strategy_option = UserSettableParameter('choice', 'Strategy', value='majority',
+                                              choices=['majority', 'minority'])
+"""
 
 def portrayTwoDimCell(agent):
     assert agent is not None
@@ -39,7 +46,7 @@ grid = CanvasGrid(portrayTwoDimCell, width, height,
 
 chart = ChartModule([{"Label": "MeanOpinion",
                       "Color": "Blue"}],
-                    data_collector_name='datacollector') # self.datacollector in VoterModel
+                    data_collector_name='datacollector') # self.datacollector in EmpireModel
 
-server = ModularServer(VoterModel, [grid, chart],
+server = ModularServer(EmpireModel, [grid, chart],
                        "Voter Model", params)

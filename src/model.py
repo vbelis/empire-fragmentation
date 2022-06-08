@@ -7,21 +7,26 @@ from agent import Voter
 import random
 
 
-
-
-def mean_opinion(model):
-    """Return the mean opinion of the agents in the given `model`
+def agent_states(model):
+    """
+    Return the number of rebels (active citizens), pro-empire (quiet/passive 
+    citizens), prisoners, and propagandists (cops) at a given time step. As 
+    a starting point of the project, the propagandists are kept constant 
+    throughout the simulation.
     """
     agent_opinion = [agent.opinion for agent in model.schedule.agents]
-    active=agent_opinion.count(2)
-    passive=agent_opinion.count(3)
-    cops=agent_opinion.count(4)
-    return [active,passive,cops]
+    active = agent_opinion.count(2)
+    passive = agent_opinion.count(3)
+    prisoners = agent_opinion.count(4)
+    cops = agent_opinion.count(1)
+    return [active, passive, prisoners, cops]
     
 
 
-class VoterModel(Model):
-    """TODO"""
+class EmpireModel(Model):
+    """
+    TODO
+    """
     def __init__(self, width, height,percentage_of_cops,percent_of_citizens, max_steps=30):
         """
         Args: TODO
@@ -51,7 +56,7 @@ class VoterModel(Model):
 
 
         self.datacollector = DataCollector(
-            model_reporters={"MeanOpinion": mean_opinion},  # A function to call
+            model_reporters={"AgentStates": agent_states},  # A function to call
             agent_reporters={"Opinion": "opinion"})  # An agent attribute
 
     def step(self):

@@ -5,13 +5,20 @@ import math
 #k=2.3
 
 class Voter(Agent):
+    """
+    Agents are devided into citizens and propagandists (cops). The former can
+    have two states 
+    #cops->1
+    #active->2
+    #pasive->3
+    #prison->4
+    """
     def __init__(self, unique_id, model, opinion, risk_aversion, grievance, 
                  jail_time, threshold=0.1, time_in_jail=0):
         """ TODO
         Args:
             TODO
         """
-
         super().__init__(unique_id=unique_id, model=model)
         self.x, self.y = unique_id
         self.opinion = opinion
@@ -33,11 +40,9 @@ class Voter(Agent):
 
     @property
     def net_risk(self):
-        #num_ones = self.opinion
-        #cops->1
-        #active->2
-        #pasive->3
-        #prison->4
+        """
+        Defines the 'net perceived risk at every time step.
+        """
         cops=0
         active=0
         passive=0
@@ -52,23 +57,10 @@ class Voter(Agent):
         if active!=0:
             eap = 1-math.exp(-2.3*np.math.floor(cops/active))#num_ones / 5 if include_self else num_ones / 4
         #NET-RISK (nr)
-            nr=eap*self.risk_aversion#frequency_zero = 1 - frequency_one
+            nr=eap*self.risk_aversion # frequency_zero = 1 - frequency_one
         else:
             nr=0
-
         return nr
-
-    #@property
-    #def indicator_z(self):
-    #    if self.model.strategy == "majority":
-    #        z = self.local_frequency[1] - self.threshold
-    #    else:
-    #        z = self.threshold - self.local_frequency[1]
-    #    return z
-
-
-################################################################################
-######################   YOUR INPUT NEEDED BELOW  ##############################
 
     def epstein(self):
         """Compute and set the `self._next_opinion` 
@@ -105,42 +97,12 @@ class Voter(Agent):
                 self.model.grid[x][y] = None
                 self.model.grid.empties.add(prisoner)
                 
-                
-
-            #if 2 in self.neighbors:
-                #self._next_opinion=1
-
-            
-
-
-        #self._next_opinion=random.choice(neighbors_values)
-
-    # def deterministic(self):
-    #     """Compute and set the `self._next_opinion` 
-    #     according to the deterministic voter model
-    #     """
-    #     if self.model.strategy == "majority" and self.indicator_z>0:
-    #         self._next_opinion=1
-    #     elif self.model.strategy == "majority" and self.indicator_z<0:
-    #         self._next_opinion=self.opinion*0
-
-
-        
-    #     if self.model.strategy == "minority" and self.indicator_z<0:
-    #         self._next_opinion=0
-    #     elif self.model.strategy == "minority" and self.indicator_z>0:
-    #         self._next_opinion=1
-################################################################################
-################################################################################
-
-
     def step(self):
-        #self._next_opinion = self.opinion
+        """
+        Defines the simulation time step.
+        """
         self.model.grid.move_to_empty(self)
-        #if self.model.model_type == "linear":
         self.epstein()
-        #else:
-        #    self.deterministic()
 
     def advance(self):
         self.opinion = self._next_opinion

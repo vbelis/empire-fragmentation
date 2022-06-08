@@ -15,7 +15,7 @@ params = {"width": 50,
          }
 
 """
-frac_one_slider = UserSettableParameter('slider', 'Fraction of agents with state=1', 
+fr_one_slider = UserSettableParameter('slider', 'Fraction of agents with state=1', 
                                         value=.5, min_value=0.1, max_value=.9, step=0.1)
 model_type_option = UserSettableParameter('choice', 'Type', value='linear',
                                               choices=['linear', 'deterministic'])
@@ -49,4 +49,7 @@ chart = ChartModule([{"Label": "Meanstate",
                     data_collector_name='datacollector') # self.datacollector in EmpireModel
 
 server = ModularServer(EmpireModel, [grid, chart],
-                       "Native Model", params)
+                       "Empire Fragmentation", params)
+
+if __name__ == "__main__":
+    server.launch()

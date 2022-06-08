@@ -55,4 +55,5 @@ server = ModularServer(EmpireModel, [grid, chart],
                        "Empire Fragmentation", params)
 
 if __name__ == "__main__":
+    print("Test git")
     server.launch()

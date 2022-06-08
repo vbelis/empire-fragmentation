@@ -27,7 +27,7 @@ class EmpireModel(Model):
     """
     TODO
     """
-    def __init__(self, width, height,percentage_of_cops,percent_of_citizens, max_steps=30):
+    def __init__(self, width, height,percentage_of_cops,percent_of_citizens, jail_time, max_steps=30):
         """
         Args: TODO
         """
@@ -48,7 +48,7 @@ class EmpireModel(Model):
                     state, 
                     risk_aversion=np.random.uniform(low=0.0, high=1.0),
                     grievance=np.random.uniform(low=0.0, high=1.0), 
-                    jail_time=2
+                    jail_time= jail_time
                 )
                 self.grid.place_agent(agent, (x, y))
                 self.schedule.add(agent)

@@ -3,13 +3,13 @@ from mesa.agent import Agent
 import random
 import math
 #k=2.3
-class Voter(Agent):
-    def __init__(self, unique_id, model, opinion, risk_aversion,grievance,jail_time, threshold=0.1,time_in_jail=0):
-        """ Initialize an agent for Voter Model
 
+class Voter(Agent):
+    def __init__(self, unique_id, model, opinion, risk_aversion, grievance, 
+                 jail_time, threshold=0.1, time_in_jail=0):
+        """ TODO
         Args:
-            opinion: 1 or 0
-            threshold: susceptibility for opposite opinion
+            TODO
         """
 
         super().__init__(unique_id=unique_id, model=model)

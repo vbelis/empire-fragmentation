@@ -25,7 +25,7 @@ strategy_option = UserSettableParameter('choice', 'Strategy', value='majority',
 
 def portrayTwoDimCell(agent):
     assert agent is not None
-    return {
+    portrayal = {
         "Shape": "rect",
         "w": 1,
         "h": 1,
@@ -33,10 +33,14 @@ def portrayTwoDimCell(agent):
         "Layer": 0,
         "x": agent.x,
         "y": agent.y,
-        "Color": "black" if agent.state == 1 else #cops 
-                 "red" if agent.state == 2 else "blue" #rebels and pro-empire
-    }
-
+    }        
+    if agent.state == 1: portrayal["Color"] = "black" # cops
+    elif agent.state == 2: portrayal["Color"] = "red" # rebels
+    elif agent.state == 3: portrayal["Color"] = "blue" # pro-empire
+    else: portrayal["Color"] = 'white'
+    return portrayal
+#"Color": "black" if agent.state == 1 else #cops 
+#                 "red" if agent.state == 2 else "blue" #rebels and pro-empire
 
 width = params['width']
 height = params['height']

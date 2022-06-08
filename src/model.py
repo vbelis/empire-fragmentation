@@ -35,7 +35,7 @@ class EmpireModel(Model):
     """
     TODO
     """
-    def __init__(self, width, height,percentage_of_cops,percent_of_citizens, jail_time, max_steps=30):
+    def __init__(self, width, height,percentage_of_cops,percent_of_citizens, jail_time, max_steps=30,jail_time_random=False):
         """
         Args: TODO
         """
@@ -55,8 +55,10 @@ class EmpireModel(Model):
                     self, 
                     state, 
                     risk_aversion=np.random.uniform(low=0.0, high=1.0),
-                    grievance=np.random.uniform(low=0.0, high=1.0), 
-                    jail_time= jail_time
+                    perceived_hardship=np.random.uniform(low=0.0, high=1.0), 
+                    #threshold=np.random.normal(),
+                    threshold=0,
+                    jail_time= random.randrange(jail_time) if jail_time_random else  jail_time
                 )
                 self.grid.place_agent(agent, (x, y))
                 self.schedule.add(agent)

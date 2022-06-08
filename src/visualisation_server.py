@@ -8,18 +8,24 @@ from mesa.visualization.UserParam import UserSettableParameter
 from model import EmpireModel
 
 frac_cops = UserSettableParameter('slider', 'Fraction of cops', 
-                                        value=.2, min_value=0.05, max_value=.9, step=0.05)
+                                        value=.04, min_value=0.05, max_value=.9, step=0.05)
 frac_citizens = UserSettableParameter('slider', 'Fraction of citizens', 
-                                      value=.5, min_value=0.1, max_value=.9, step=0.05)
+                                      value=.7, min_value=0.1, max_value=.9, step=0.05)
 jail_time = UserSettableParameter('slider', 'Jail time', 
-                                      value=2, min_value=1, max_value=5, step=1)
+                                      value=5, min_value=1, max_value=20, step=1)
 
+jail_time_random = UserSettableParameter('checkbox', 'Random jail time', value=False)
+" prbably you can add a lit here with different distributions (uniform, normal,...)"
+
+max_steps = UserSettableParameter('number', 'Time step', value=100)
 # Set the model parameters
 params = {"width": 50, 
           "height": 50,
           "percentage_of_cops": frac_cops,
           "percent_of_citizens": frac_citizens,
           "jail_time": jail_time,
+          'jail_time_random':jail_time_random,
+          'max_steps':max_steps
          }
 
 def portrayTwoDimCell(agent):

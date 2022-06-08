@@ -17,8 +17,8 @@ class Native(Agent):
     - pasive->3
     - prison->4
     """
-    def __init__(self, unique_id, model, state, risk_aversion, grievance, 
-                 jail_time, threshold=0.1, time_in_jail=0):
+    def __init__(self, unique_id, model, state, risk_aversion,perceived_hardship, 
+                 jail_time, threshold=0.1, time_in_jail=0,government_legitimacy=0.84):
         """ TODO
         Args:
             TODO
@@ -29,10 +29,10 @@ class Native(Agent):
         self._next_state = None
         self.threshold = threshold
         self.risk_aversion=risk_aversion
-        self.grievance=grievance
         self.time_in_jail=time_in_jail
         self._next_time_in_jail = 0
         self.jail_time=jail_time
+        self.grievance=perceived_hardship*(1-government_legitimacy) # @paper: Unifrom distribution
 
     @property
     def neighbors_cells(self):
@@ -59,10 +59,12 @@ class Native(Agent):
                 passive+=1
         #ESTIMATED-ARREST-PROBABILITY (eap)
         if active!=0:
-            eap = 1-math.exp(-2.3*np.math.floor(cops/active))#num_ones / 5 if include_self else num_ones / 4
+            eap = 1-math.exp(-2.3*np.math.floor(cops/active))# here -2.3 is a tuninig parameter k (it can be another variable and nw is adopted from the paper)
         #NET-RISK (nr)
             nr=eap*self.risk_aversion # frequency_zero = 1 - frequency_one
         else:
+            #eap = 1-math.exp(-2.3*np.math.floor(cops))
+            #nr=eap*self.risk_aversion
             nr=0
         return nr
 

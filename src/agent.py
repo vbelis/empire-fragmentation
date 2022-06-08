@@ -9,7 +9,7 @@ class Native(Agent):
     Agents (called also 'natives' here) are devided into citizens and propagandists 
     (cops). The former can have two states: being a rebel (active), or pro-empire 
     (passive/quiet). The latter stay constant throughout. Both move randomly on the
-    grid, obeying a Moore neighbourhood (can change throughout the project) 
+    grid, obeying a Moore neighborhood (can change throughout the project) 
     and periodic boundary conditions. We have the following conventions about the agent
     states:
     - cops->1

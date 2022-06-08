@@ -20,7 +20,16 @@ def agent_states(model):
     prisoners = agent_state.count(4)
     cops = agent_state.count(1)
     return [active, passive, prisoners, cops]
-    
+
+# FIXME more elegant and computationally inexpensive...
+def get_rebels(model):
+    return agent_states(model)[0]
+def get_passive(model):
+    return agent_states(model)[1]
+def get_prisoners(model):
+    return agent_states(model)[2]
+def get_cops(model):
+    return agent_states(model)[3]
 
 
 class EmpireModel(Model):
@@ -56,7 +65,8 @@ class EmpireModel(Model):
 
 
         self.datacollector = DataCollector(
-            model_reporters={"AgentStates": agent_states},  # A function to call
+            model_reporters={"Rebels": get_rebels, "Pro-empire": get_passive, 
+                             "Prisoners": get_prisoners, "Propagandists": get_cops},  # Need to be Callables
             agent_reporters={"state": "state"})  # An agent attribute
 
     def step(self):

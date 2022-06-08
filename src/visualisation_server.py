@@ -44,8 +44,11 @@ height = params['height']
 pixel_ratio = 10
 grid = CanvasGrid(portrayTwoDimCell, width, height,
                   width*pixel_ratio, height*pixel_ratio)
-chart = ChartModule([{"Label": "Meanstate",
-                      "Color": "Blue"}],
+chart = ChartModule([{"Label": "Rebels", "Color": "Red"}, 
+                     {"Label": "Pro-empire", "Color": "Blue"},
+                     {"Label": "Prisoners", "Color": "Black"},
+                     {"Label": "Propagandists", "Color": "Green"},
+                    ],
                     data_collector_name='datacollector') # self.datacollector in EmpireModel
 
 server = ModularServer(EmpireModel, [grid, chart],

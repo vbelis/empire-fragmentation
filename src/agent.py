@@ -68,7 +68,7 @@ class Native(Agent):
             nr=0
         return nr
 
-    def epstein(self):
+    def decision_rule(self):
         """Compute and set the `self._next_state` 
         according to the linear Native model
         """
@@ -108,7 +108,7 @@ class Native(Agent):
         Defines the simulation time step.
         """
         self.model.grid.move_to_empty(self)
-        self.epstein()
+        self.decision_rule()
 
     def advance(self):
         self.state = self._next_state

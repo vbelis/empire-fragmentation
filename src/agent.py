@@ -17,8 +17,9 @@ class Native(Agent):
     - pasive->3
     - prison->4
     """
-    def __init__(self, unique_id, model, state, risk_aversion,perceived_hardship, 
-                 jail_time, threshold=0.1, time_in_jail=0,government_legitimacy=0.84):
+    def __init__(self, unique_id, model, state, risk_aversion, perceived_hardship, 
+                 jail_time, government_legitimacy, decrease_legit, threshold=0.1,
+                 time_in_jail=0):
         """ TODO
         Args:
             TODO
@@ -32,7 +33,15 @@ class Native(Agent):
         self.time_in_jail=time_in_jail
         self._next_time_in_jail = 0
         self.jail_time=jail_time
-        self.grievance=perceived_hardship*(1-government_legitimacy) # @paper: Unifrom distribution
+        self.perceived_hardship = perceived_hardship
+        # The agents have the same opinion about the government but maybe we
+        # can make it subjective with mean=self.government_legitimacy.
+        self.government_legitimacy= government_legitimacy
+        # We can adjust the law with which legitimacy decreases:
+        self.decrease_legit = decrease_legit
+        self.legit_step = self.government_legitimacy/model.max_steps # L->0 always
+        self.grievance=self.perceived_hardship*(1-self.government_legitimacy)
+        # @paper: Unifrom distribution for perceived_hardship.
 
     @property
     def neighbors_cells(self):
@@ -107,6 +116,10 @@ class Native(Agent):
         """
         Defines the simulation time step.
         """
+        # FIXME Should we put this check here or in self.advance?
+        if self.decrease_legit: 
+            self.evolve_government_legitimacy()
+            self.grievance = self.perceived_hardship*(1-self.government_legitimacy)
         self.model.grid.move_to_empty(self)
         self.decision_rule()
 
@@ -114,3 +127,12 @@ class Native(Agent):
         self.state = self._next_state
         self.time_in_jail=self._next_time_in_jail
        
+    def evolve_government_legitimacy(self):
+        """
+        Evolves (typically decreases) the government_legitimacy at every time
+        step. Can be extended to support different ways of evolution. E.g.,
+        linear, exponential, or even evolutions that don't necessarily decrease
+        the legitimacy of the empire.
+        """
+        self.government_legitimacy = self.government_legitimacy - self.legit_step
+        if self.government_legitimacy <= 0.: return 0

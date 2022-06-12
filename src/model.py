@@ -35,7 +35,9 @@ class EmpireModel(Model):
     """
     TODO
     """
-    def __init__(self, width, height,percentage_of_cops,percent_of_citizens, jail_time, max_steps=30,jail_time_random=False):
+    def __init__(self, width, height,percentage_of_cops,percent_of_citizens, 
+                 jail_time, max_steps, government_legitimacy, decrease_legit,
+                 jail_time_random=False):
         """
         Args: TODO
         """
@@ -57,8 +59,10 @@ class EmpireModel(Model):
                     risk_aversion=np.random.uniform(low=0.0, high=1.0),
                     perceived_hardship=np.random.uniform(low=0.0, high=1.0), 
                     #threshold=np.random.normal(),
+                    government_legitimacy=government_legitimacy,
                     threshold=0,
-                    jail_time= random.randrange(jail_time) if jail_time_random else  jail_time
+                    decrease_legit=decrease_legit,
+                    jail_time=random.randrange(jail_time) if jail_time_random else  jail_time
                 )
                 self.grid.place_agent(agent, (x, y))
                 self.schedule.add(agent)
@@ -73,7 +77,6 @@ class EmpireModel(Model):
     def step(self):
         '''Advance the model by one step.'''
         self.datacollector.collect(self)
-
         #self.grid.move_to_empty()
         self.schedule.step()
 

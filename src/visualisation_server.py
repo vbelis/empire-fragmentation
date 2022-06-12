@@ -13,9 +13,13 @@ frac_citizens = UserSettableParameter('slider', 'Fraction of citizens',
                                       value=.7, min_value=0.1, max_value=.9, step=0.05)
 jail_time = UserSettableParameter('slider', 'Jail time', 
                                       value=5, min_value=1, max_value=20, step=1)
-
+government_legitimacy = UserSettableParameter('slider', 'Empire popularity', 
+                                              value=0.84, min_value=0., 
+                                              max_value=1., step=0.05,)
 jail_time_random = UserSettableParameter('checkbox', 'Random jail time', value=False)
-" prbably you can add a lit here with different distributions (uniform, normal,...)"
+# " prbably you can add a lit here with different distributions (uniform, normal,...)"
+decrease_legit = UserSettableParameter('checkbox', 'Decrease empire legitimacy', 
+                                         value=False)
 
 max_steps = UserSettableParameter('number', 'Time step', value=100)
 # Set the model parameters
@@ -25,7 +29,9 @@ params = {"width": 50,
           "percent_of_citizens": frac_citizens,
           "jail_time": jail_time,
           'jail_time_random':jail_time_random,
-          'max_steps':max_steps
+          'max_steps':max_steps,
+          "government_legitimacy": government_legitimacy,
+          "decrease_legit": decrease_legit,
          }
 
 def portrayTwoDimCell(agent):

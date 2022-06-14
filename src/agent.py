@@ -28,12 +28,15 @@ class Native(Agent):
         self.x, self.y = unique_id
         self.state = state
         self._next_state = None
+        self._next_gl = None
+        self._next_grievance=None
         self.threshold = threshold
         self.risk_aversion=risk_aversion
         self.time_in_jail=time_in_jail
         self._next_time_in_jail = 0
         self.jail_time=jail_time
         self.perceived_hardship = perceived_hardship
+        
         # The agents have the same opinion about the government but maybe we
         # can make it subjective with mean=self.government_legitimacy.
         self.government_legitimacy= government_legitimacy
@@ -41,8 +44,22 @@ class Native(Agent):
         self.decrease_legit = decrease_legit
         self.legit_step = self.government_legitimacy/model.max_steps # L->0 always
         self.grievance=self.perceived_hardship*(1-self.government_legitimacy)
+        
         # @paper: Unifrom distribution for perceived_hardship.
-
+    
+    def evolve_government_legitimacy(self):
+        """
+        Evolves (typically decreases) the government_legitimacy at every time
+        step. Can be extended to support different ways of evolution. E.g.,
+        linear, exponential, or even evolutions that don't necessarily decrease
+        the legitimacy of the empire.
+        """
+        self._next_gl = self.government_legitimacy - self.legit_step
+        return self._next_gl
+        #if self.government_legitimacy <= 0.: return 0
+    @property 
+    def Griviance(self):
+        return self.perceived_hardship*(1-self.government_legitimacy)
     @property
     def neighbors_cells(self):
         return self.model.grid.get_neighborhood(pos=(self.x, self.y), moore=True)
@@ -76,6 +93,9 @@ class Native(Agent):
             #nr=eap*self.risk_aversion
             nr=0
         return nr
+    def change_in_grivience(self):
+        if self.decrease_legit:
+            self.grievance=self.perceived_hardship*(1-self.government_legitimacy)
 
     def decision_rule(self):
         """Compute and set the `self._next_state` 
@@ -83,7 +103,7 @@ class Native(Agent):
         """
         #neighbors_values= [neighbor.state for neighbor in self.neighbors]
         if self.state==2 or 3:
-            if self.grievance-self.net_risk>self.threshold:
+            if abs(self.Griviance-self.net_risk)>self.threshold:
                 self._next_state=2
             else:
                 self._next_state=3
@@ -118,21 +138,19 @@ class Native(Agent):
         """
         # FIXME Should we put this check here or in self.advance?
         if self.decrease_legit: 
-            self.evolve_government_legitimacy()
-            self.grievance = self.perceived_hardship*(1-self.government_legitimacy)
+            self._next_gl=self.evolve_government_legitimacy()
+            self._next_grievance = self.perceived_hardship*(1-self.government_legitimacy)
+        else:
+            self._next_gl=self.government_legitimacy
+            self._next_grievance=self.grievance
+
         self.model.grid.move_to_empty(self)
         self.decision_rule()
 
     def advance(self):
         self.state = self._next_state
+        self.grievance=self._next_grievance
+        self.government_legitimacy=self._next_gl
         self.time_in_jail=self._next_time_in_jail
        
-    def evolve_government_legitimacy(self):
-        """
-        Evolves (typically decreases) the government_legitimacy at every time
-        step. Can be extended to support different ways of evolution. E.g.,
-        linear, exponential, or even evolutions that don't necessarily decrease
-        the legitimacy of the empire.
-        """
-        self.government_legitimacy = self.government_legitimacy - self.legit_step
-        if self.government_legitimacy <= 0.: return 0
+

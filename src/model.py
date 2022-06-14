@@ -29,6 +29,13 @@ def get_prisoners(model):
     return agent_states(model)[2]
 def get_cops(model):
     return agent_states(model)[3]
+def percieved_gl(model):
+    agent_state = [agent.government_legitimacy for agent in model.schedule.agents]
+    return np.mean(agent_state)
+def griviance(model):
+    agent_state = [agent.grievance for agent in model.schedule.agents]
+    return np.mean(agent_state)
+    
 
 
 class EmpireModel(Model):
@@ -60,7 +67,7 @@ class EmpireModel(Model):
                     perceived_hardship=np.random.uniform(low=0.0, high=1.0), 
                     #threshold=np.random.normal(),
                     government_legitimacy=government_legitimacy,
-                    threshold=0,
+                    threshold=0.1,#np.random.uniform(low=0.0, high=1.0),
                     decrease_legit=decrease_legit,
                     jail_time=random.randrange(jail_time) if jail_time_random else  jail_time
                 )
@@ -71,7 +78,7 @@ class EmpireModel(Model):
 
         self.datacollector = DataCollector(
             model_reporters={"Rebels": get_rebels, "Pro-empire": get_passive, 
-                             "Prisoners": get_prisoners, "Propagandists": get_cops},  # Need to be Callables
+                             "Prisoners": get_prisoners, "Propagandists": get_cops,'Government Legitemicy':percieved_gl,'Griviance':griviance},  # Need to be Callables
             agent_reporters={"state": "state"})  # An agent attribute
 
     def step(self):

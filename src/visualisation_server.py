@@ -56,16 +56,21 @@ height = params['height']
 pixel_ratio = 10
 grid = CanvasGrid(portrayTwoDimCell, width, height,
                   width*pixel_ratio, height*pixel_ratio)
-chart = ChartModule([{"Label": "Rebels", "Color": "Red"}, 
+chart1 = ChartModule([{"Label": "Rebels", "Color": "Red"}, 
                      {"Label": "Pro-empire", "Color": "Blue"},
                      {"Label": "Prisoners", "Color": "Black"},
-                     {"Label": "Propagandists", "Color": "Green"},
+                     {"Label": "Propagandists", "Color": "Green"}
+                    ],
+                    data_collector_name='datacollector') # self.datacollector in EmpireModel
+chart2 = ChartModule([
+                     {"Label": "Government Legitemicy", "Color": "Red"},
+                     {"Label": "Griviance", "Color": "Blue"}
                     ],
                     data_collector_name='datacollector') # self.datacollector in EmpireModel
 
-server = ModularServer(EmpireModel, [grid, chart],
+server = ModularServer(EmpireModel, [grid, chart1,chart2],
                        "Empire Fragmentation", params)
 
 if __name__ == "__main__":
-    print("Test git")
+
     server.launch()

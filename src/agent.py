@@ -54,9 +54,10 @@ class Native(Agent):
         linear, exponential, or even evolutions that don't necessarily decrease
         the legitimacy of the empire.
         """
-        self._next_gl = self.government_legitimacy - self.legit_step
-        return self._next_gl
-        #if self.government_legitimacy <= 0.: return 0
+        self._next_gl = self.government_legitimacy/1.2 #- self.legit_step
+        
+        if self.government_legitimacy <= 0.: return 0
+        else: return self._next_gl
     @property 
     def Griviance(self):
         return self.perceived_hardship*(1-self.government_legitimacy)
@@ -103,7 +104,7 @@ class Native(Agent):
         """
         #neighbors_values= [neighbor.state for neighbor in self.neighbors]
         if self.state==2 or 3:
-            if abs(self.Griviance-self.net_risk)>self.threshold:
+            if self.Griviance-self.net_risk>self.threshold:
                 self._next_state=2
             else:
                 self._next_state=3

@@ -52,6 +52,7 @@ class EmpireModel(Model):
         self.schedule = SimultaneousActivation(self)
         self.max_steps = max_steps
         self.grid = SingleGrid(width=width, height=height, torus=True)
+        #self.running = True
 
         for (_, x, y) in self.grid.coord_iter():
             if random.random() < percentage_of_cops+percent_of_citizens:
@@ -78,8 +79,8 @@ class EmpireModel(Model):
 
         self.datacollector = DataCollector(
             model_reporters={"Rebels": get_rebels, "Pro-empire": get_passive, 
-                             "Prisoners": get_prisoners, "Propagandists": get_cops,'Government Legitemicy':percieved_gl,'Griviance':griviance},  # Need to be Callables
-            agent_reporters={"state": "state"})  # An agent attribute
+                             "Prisoners": get_prisoners, "Propagandists": get_cops,'Government Legitemicy':percieved_gl,'Griviance':griviance})  # Need to be Callables
+            #agent_reporters={"state": "state"})  # An agent attribute
 
     def step(self):
         '''Advance the model by one step.'''

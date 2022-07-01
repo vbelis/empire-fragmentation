@@ -4,9 +4,9 @@ authors:
   - family-names: Belis
     given-names: Vasilis
   - family-names: Keshavarzzadeh
-  - given-names: Amirhassan
+    given-names: Amirhassan
   - family-names: D'Elia
-  - given-names: Ursula
+    given-names: Ursula
 title: "Empire fragmentation with agent-based modelling"
 version: 0.9.0
 date-released: 2022-01-07

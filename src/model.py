@@ -44,7 +44,7 @@ def percieved_gl(model):
     return np.mean(agent_state)
 
 
-def griviance(model):
+def grievance(model):
     agent_state = [agent.grievance for agent in model.schedule.agents]
     return np.mean(agent_state)
 
@@ -105,7 +105,7 @@ class EmpireModel(Model):
                 "Prisoners": get_prisoners,
                 "Propagandists": get_cops,
                 "Government Legitemicy": percieved_gl,
-                "Griviance": griviance,
+                "Grievance": grievance,
             }
         )  # Need to be Callables
         # agent_reporters={"state": "state"})  # An agent attribute

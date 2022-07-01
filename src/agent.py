@@ -75,10 +75,6 @@ class Native(Agent):
             return self._next_gl
 
     @property
-    def Griviance(self):
-        return self.perceived_hardship * (1 - self.government_legitimacy)
-
-    @property
     def neighbors_cells(self):
         return self.model.grid.get_neighborhood(pos=(self.x, self.y), moore=True)
 
@@ -114,17 +110,13 @@ class Native(Agent):
             nr = 0
         return nr
 
-    def change_in_grivience(self):
-        if self.decrease_legit:
-            self.grievance = self.perceived_hardship * (1 - self.government_legitimacy)
-
     def decision_rule(self):
         """Compute and set the `self._next_state`
         according to the linear Native model
         """
         # neighbors_values= [neighbor.state for neighbor in self.neighbors]
         if self.state == 2 or 3:
-            if self.Griviance - self.net_risk > self.threshold:
+            if self.grievance - self.net_risk > self.threshold:
                 self._next_state = 2
             else:
                 self._next_state = 3
@@ -157,7 +149,6 @@ class Native(Agent):
         """
         Defines the simulation time step.
         """
-        # FIXME Should we put this check here or in self.advance?
         if self.decrease_legit:
             self._next_gl = self.evolve_government_legitimacy()
             self._next_grievance = self.perceived_hardship * (

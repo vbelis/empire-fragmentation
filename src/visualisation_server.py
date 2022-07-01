@@ -18,7 +18,7 @@ jail_time = UserSettableParameter(
 )
 government_legitimacy = UserSettableParameter(
     "slider",
-    "Empire popularity",
+    "Empire legitimacy",
     value=0.84,
     min_value=0.0,
     max_value=1.0,
@@ -84,7 +84,7 @@ chart1 = ChartModule(
 chart2 = ChartModule(
     [
         {"Label": "Government Legitemicy", "Color": "Red"},
-        {"Label": "Griviance", "Color": "Blue"},
+        {"Label": "Grievance", "Color": "Blue"},
     ],
     data_collector_name="datacollector",
 )  # self.datacollector in EmpireModel

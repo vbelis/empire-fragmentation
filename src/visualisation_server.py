@@ -17,7 +17,6 @@ government_legitimacy = UserSettableParameter('slider', 'Empire popularity',
                                               value=0.84, min_value=0., 
                                               max_value=1., step=0.05,)
 jail_time_random = UserSettableParameter('checkbox', 'Random jail time', value=False)
-# " prbably you can add a lit here with different distributions (uniform, normal,...)"
 decrease_legit = UserSettableParameter('checkbox', 'Decrease empire legitimacy', 
                                          value=False)
 
@@ -58,8 +57,8 @@ grid = CanvasGrid(portrayTwoDimCell, width, height,
                   width*pixel_ratio, height*pixel_ratio)
 chart1 = ChartModule([{"Label": "Rebels", "Color": "Red"}, 
                      {"Label": "Pro-empire", "Color": "Blue"},
-                     {"Label": "Prisoners", "Color": "Black"},
-                     {"Label": "Propagandists", "Color": "Green"}
+                     {"Label": "Prisoners", "Color": "Green"},
+                     {"Label": "Propagandists", "Color": "Black"}
                     ],
                     data_collector_name='datacollector') # self.datacollector in EmpireModel
 chart2 = ChartModule([

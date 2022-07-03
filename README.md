@@ -11,4 +11,9 @@ conda env create -f environment.yml
 using the `environment.yml` file provided in the repo.
 
 ## Quick start
-
+After installing and activating the conda environment you can start an interactive session of the simulation by running
+```
+python src/visualisation_server.py
+```
+You can play with the model parameters of interest, visualise the interaction of the agents on the grid, and extract insights from the corresponding plots.
+![alt text](https://github.com/vbelis/empire-fragmentation/blob/main/docs/simulation_gfx.jpeg?raw=true)

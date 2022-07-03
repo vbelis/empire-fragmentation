@@ -1,8 +1,8 @@
 import numpy as np
 from mesa.agent import Agent
+from mesa.model import Model
 import random
 import math
-
 # k=2.3
 
 
@@ -18,24 +18,36 @@ class Native(Agent):
     - active->2
     - pasive->3
     - prison->4
+
+    For more information please check the report in `docs/`.
     """
 
     def __init__(
         self,
-        unique_id,
-        model,
-        state,
-        risk_aversion,
-        perceived_hardship,
-        jail_time,
-        government_legitimacy,
-        decrease_legit,
-        threshold=0.1,
-        time_in_jail=0,
+        unique_id: int,
+        model: Model,
+        state: int, # 0 or 1.
+        risk_aversion: float,
+        perceived_hardship: float,
+        jail_time: int,
+        government_legitimacy: float,
+        decrease_legit: BlockingIOError,
+        threshold: float = 0.1,
+        time_in_jail:int =0,
     ):
-        """TODO
+        """
         Args:
-            TODO
+            unique_id: The MESA id of the agent.
+            model: The MESA model that we defined in `model.py`.
+            state: The state of the agent; 0 if pro-empire 1 if a rebel.
+            risk_aversion: The inherent risk aversion of the agent, defined in [0,1].
+            perceived_hardship: Individual perceived hardship of the agent in [0,1].
+            jail_time: Jail time that the agent stays in jail.
+            government_legitimacy: The legitmacy of the government as viewed by the agent.
+            decrease_legit: Flag the dictates whether the government will decrease in 
+                            legitimacy at the next time step, according to the agent.
+            threshold: Threshold that defines whether the agent will rebel or not.
+            time_in_jail: Time the agent spent in jail.
         """
         super().__init__(unique_id=unique_id, model=model)
         self.x, self.y = unique_id
@@ -76,16 +88,18 @@ class Native(Agent):
 
     @property
     def neighbors_cells(self):
+        """Get neighboring cells on the grid."""
         return self.model.grid.get_neighborhood(pos=(self.x, self.y), moore=True)
 
     @property
     def neighbors(self):
+        """Get neighboring agents."""
         return self.model.grid.get_neighbors(pos=(self.x, self.y), moore=True)
 
     @property
-    def net_risk(self):
+    def net_risk(self) -> float:
         """
-        Defines the 'net perceived risk' at every time step.
+        Calculates and retuns 'net perceived risk' at every time step.
         """
         cops = 0
         active = 0
@@ -111,10 +125,9 @@ class Native(Agent):
         return nr
 
     def decision_rule(self):
-        """Compute and set the `self._next_state`
-        according to the linear Native model
         """
-        # neighbors_values= [neighbor.state for neighbor in self.neighbors]
+        Compute and set the `self._next_state` according to the linear Native model
+        """
         if self.state == 2 or 3:
             if self.grievance - self.net_risk > self.threshold:
                 self._next_state = 2
@@ -146,9 +159,7 @@ class Native(Agent):
                 self.model.grid.empties.add(prisoner)
 
     def step(self):
-        """
-        Defines the simulation time step.
-        """
+        """Defines the simulation time step."""
         if self.decrease_legit:
             self._next_gl = self.evolve_government_legitimacy()
             self._next_grievance = self.perceived_hardship * (
@@ -162,6 +173,7 @@ class Native(Agent):
         self.decision_rule()
 
     def advance(self):
+        """Advance the agent by one time step."""
         self.state = self._next_state
         self.grievance = self._next_grievance
         self.government_legitimacy = self._next_gl

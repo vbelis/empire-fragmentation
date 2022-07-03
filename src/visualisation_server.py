@@ -80,14 +80,14 @@ chart1 = ChartModule(
         {"Label": "Propagandists", "Color": "Black"},
     ],
     data_collector_name="datacollector",
-)  # self.datacollector in EmpireModel
+)
 chart2 = ChartModule(
     [
         {"Label": "Government Legitemicy", "Color": "Red"},
         {"Label": "Grievance", "Color": "Blue"},
     ],
     data_collector_name="datacollector",
-)  # self.datacollector in EmpireModel
+)
 
 server = ModularServer(
     EmpireModel, [grid, chart1, chart2], "Empire Fragmentation", params
